@@ -7,5 +7,6 @@ import (
 func GetInterceptor() []grpc.UnaryServerInterceptor {
 	return []grpc.UnaryServerInterceptor{
 		LoggingInterceptor,
+		ApiKeyInterceptor,
 	}
 }

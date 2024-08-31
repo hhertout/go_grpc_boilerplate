@@ -8,11 +8,17 @@ import (
 	"github.com/hhertout/grpc_boilerplate/internal/interceptor"
 	"github.com/hhertout/grpc_boilerplate/internal/server"
 	"github.com/hhertout/grpc_boilerplate/pb"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	listener, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatal("Failed to create listener")
