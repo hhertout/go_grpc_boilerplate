@@ -2,6 +2,7 @@ package interceptor
 
 import (
 	"context"
+	"log"
 	"os"
 
 	"go.uber.org/zap"
@@ -25,6 +26,10 @@ func ApiKeyInterceptor(
 	logger := ctx.Value(ContextKey("logger")).(*zap.Logger)
 
 	apiKey := os.Getenv("API_KEY")
+	if apiKey == "" {
+		log.Fatal("API_KEY is not set")
+	}
+
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
 		logger.Error("No metadata found")
