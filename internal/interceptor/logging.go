@@ -22,6 +22,6 @@ func LoggingInterceptor(
 		log.Printf("RPC failed with status: %v", st.Code())
 	}
 
-	log.Printf("gRPC method=%s; time taken=%v", info.FullMethod, time.Since(start))
+	log.Printf("gRPC method=%s; time_taken=%v", info.FullMethod, time.Since(start))
 	return resp, err
 }

@@ -23,9 +23,12 @@ func ApiKeyInterceptor(
 		return nil, status.Errorf(codes.PermissionDenied, "No metadata found")
 	}
 
-	headerApiKey := md.Get("x-api-key")[0]
+	headerApiKey := md.Get("x-api-key")
+	if len(headerApiKey) == 0 {
+		return nil, status.Errorf(codes.PermissionDenied, "INVALID API KEY")
+	}
 
-	if headerApiKey != apiKey {
+	if headerApiKey[0] != apiKey {
 		return nil, status.Errorf(codes.PermissionDenied, "INVALID API KEY")
 	}
 
