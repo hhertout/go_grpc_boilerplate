@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hhertout/grpc_boilerplate/internal/service"
 	"github.com/hhertout/grpc_boilerplate/pb"
@@ -15,12 +14,17 @@ type Server struct {
 }
 
 func (s *Server) Add(ctx context.Context, in *pb.CalculationRequest) (*pb.CalculationResponse, error) {
-	fmt.Println("I'm in the add function")
-	if in.A == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "Can't set 0 to A")
+	return &pb.CalculationResponse{
+		Result: service.Add(in.A, in.B),
+	}, nil
+}
+
+func (s *Server) Divide(ctx context.Context, in *pb.CalculationRequest) (*pb.CalculationResponse, error) {
+	if in.B == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "Can't divide by 0 !")
 	}
 
 	return &pb.CalculationResponse{
-		Result: int64(service.Add(int(in.A), int(in.B))),
+		Result: service.Divide(in.A, in.B),
 	}, nil
 }

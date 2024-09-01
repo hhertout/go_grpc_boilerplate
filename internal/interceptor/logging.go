@@ -32,7 +32,7 @@ func LoggingInterceptor(
 	resp, err := handler(ctx, req)
 	if err != nil {
 		st, _ := status.FromError(err)
-		logger.Sugar().Errorf("RPC failed with status: %v", st.Code())
+		logger.Error("RPC failed", zap.String("status", st.Code().String()))
 	}
 
 	logger.Info("RPC call", zap.String("method", info.FullMethod), zap.Duration("time_taken", time.Since(start)))
