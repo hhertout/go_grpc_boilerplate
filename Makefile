@@ -2,6 +2,7 @@ all: build
 
 generate:
 	@echo "Generating protobuf files"
+	@buf lint
 	@protoc --proto_path=protobuf protobuf/*.proto --go_out=. --go-grpc_out=.
 
 build:

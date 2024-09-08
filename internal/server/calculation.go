@@ -10,21 +10,21 @@ import (
 )
 
 type Server struct {
-	pb.UnimplementedCalculatorServer
+	pb.UnimplementedCalculatorServiceServer
 }
 
-func (s *Server) Add(ctx context.Context, in *pb.CalculationRequest) (*pb.CalculationResponse, error) {
-	return &pb.CalculationResponse{
+func (s *Server) Add(ctx context.Context, in *pb.AddRequest) (*pb.AddResponse, error) {
+	return &pb.AddResponse{
 		Result: service.Add(in.A, in.B),
 	}, nil
 }
 
-func (s *Server) Divide(ctx context.Context, in *pb.CalculationRequest) (*pb.CalculationResponse, error) {
+func (s *Server) Divide(ctx context.Context, in *pb.AddRequest) (*pb.AddResponse, error) {
 	if in.B == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "Can't divide by 0 !")
 	}
 
-	return &pb.CalculationResponse{
+	return &pb.AddResponse{
 		Result: service.Divide(in.A, in.B),
 	}, nil
 }

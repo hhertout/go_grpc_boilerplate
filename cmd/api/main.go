@@ -54,7 +54,7 @@ func main() {
 	reflection.Register(s)
 	defer s.GracefulStop()
 
-	pb.RegisterCalculatorServer(s, &server.Server{})
+	pb.RegisterCalculatorServiceServer(s, &server.Server{})
 
 	// #### Lauching server ####
 	logger.Info("🚀 Server running", zap.String("ts", time.Now().Format("2006-01-02 15:04:05")), zap.Int("port", port))
