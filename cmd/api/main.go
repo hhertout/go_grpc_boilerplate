@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net"
 	"os"
 	"strconv"
-	"time"
 
 	"github.com/hhertout/grpc_boilerplate/internal/interceptor"
 	"github.com/hhertout/grpc_boilerplate/internal/server"
@@ -31,7 +29,7 @@ func main() {
 	if os.Getenv("DOCKER_RUN") == "false" {
 		err := godotenv.Load()
 		if err != nil {
-			log.Fatal("Error loading .env file")
+			logger.Fatal("Error loading .env file")
 		}
 	}
 
@@ -43,12 +41,12 @@ func main() {
 	// Retrieve port from env variable
 	port, err := strconv.Atoi(os.Getenv("PORT"))
 	if err != nil {
-		log.Fatal("PORT env variable must be set and be an integer")
+		logger.Fatal("PORT env variable must be set and be an integer")
 	}
 
 	listener, err := net.Listen("tcp", fmt.Sprintf((":%d"), port))
 	if err != nil {
-		log.Fatal("Failed to create listener")
+		logger.Fatal("Failed to create listener")
 	}
 
 	s := grpc.NewServer(
@@ -62,9 +60,9 @@ func main() {
 	pb.RegisterCalculatorServiceServer(s, &server.Server{})
 
 	// #### Lauching server ####
-	logger.Info("🚀 Server running", zap.String("ts", time.Now().Format("2006-01-02 15:04:05")), zap.Int("port", port))
+	logger.Info("🚀 Server running", zap.Int("port", port))
 	if err := s.Serve(listener); err != nil {
 		s.GracefulStop()
-		log.Fatalf("Fail to serve : %v", err)
+		logger.Sugar().Fatalf("Fail to serve : %v", err)
 	}
 }
