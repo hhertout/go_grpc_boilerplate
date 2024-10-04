@@ -20,6 +20,9 @@ import (
 func main() {
 	// init logger
 	logger, _ := zap.NewProduction()
+	if os.Getenv("GO_ENV") == "development" {
+		logger, _ = zap.NewDevelopment()
+	}
 	defer logger.Sync()
 
 	// Load .env file if not running in a docker container
@@ -49,7 +52,9 @@ func main() {
 	}
 
 	s := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(interceptor.GetInterceptors()...),
+		grpc.ChainUnaryInterceptor(
+			interceptor.GetInterceptors(logger)...,
+		),
 	)
 	reflection.Register(s)
 	defer s.GracefulStop()
